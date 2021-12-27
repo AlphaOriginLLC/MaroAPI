@@ -6,6 +6,7 @@ const db = require('../storage/database');
 let auctions = {};
 
 const fetchAuctions = async function (pages = 0) {
+  console.error("updating auctions");	
   for (let i = 0; i <= pages; i++) {
     const auctionPage = await api.getAuctionPage(i);
     if (!auctionPage.success) continue;
@@ -21,14 +22,14 @@ const updateAuctions = async function () {
   Object.keys(auctions).forEach(async item => {
     const sales = auctions[item].map(i => ({ price: i.price, count: i.count }));
 
-    const lowest = Math.min(...sales.map(i => i.price));
-    const auction = auctions[item].filter(i => i.price === lowest)[0];
+    const lowest = Math.min(...sales.map(i => i.value));
+    const auction = auctions[item].filter(i => i.value === lowest)[0];
 
     await db.auctions.updateOne({ id: item.toUpperCase() }, { sales: sales, auction: auction }, { upsert: true });
   });
 
   auctions = {};
-  setTimeout(() => fetchAuctions(), 30 * 10000);
+  setTimeout(() => fetchAuctions(), 30 * 1000);
 };
 
 const processAuctions = async function (data) {
@@ -46,7 +47,8 @@ const processAuctions = async function (data) {
         price: auction.starting_bid,
         seller: auction.auctioneer,
         ending: auction.end,
-        count: item.Count.value
+        count: item.Count.value,
+		value: (item.Count.value <= 1) ? auction.starting_bid : auction.starting_bid / item.Count.value
       };
 
       Object.keys(auctions).includes(id) ? auctions[id].push(format) : (auctions[id] = [format]);
