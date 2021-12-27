@@ -7,7 +7,7 @@ let prices = {};
 
 const retrievePrices = async function () {
   for (const item of await db.auctions.find()) {
-    prices[item.id.toLowerCase()] = parseInt(item.auction.price);
+    prices[item.id.toLowerCase()] = parseInt(item.auction.value);
   }
 
   for (const product of await db.bazaar.find()) {
