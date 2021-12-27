@@ -22,7 +22,15 @@ const createJsonResponse = function (res, code, reason) {
   });
 };
 
+router.get('/test', async (req, res) => {
+  return res.status(200).json({
+    status: 200,
+    data: "OK"
+  });
+});
+
 router.post('/categories', async (req, res) => {
+  console.log("getting request");
   const profile = req.body.data;
 
   try {
@@ -37,6 +45,7 @@ router.post('/categories', async (req, res) => {
       data: await networthGenerator.getNetworth(items, profile)
     });
   } catch (e) {
+    console.error(e);
     return createJsonResponse(res, 500, 'An internal server error occurred.');
   }
 });
