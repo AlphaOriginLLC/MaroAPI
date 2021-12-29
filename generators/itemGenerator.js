@@ -124,7 +124,7 @@ const parseItems = async function (base64, db) {
       }
 
       if (ExtraAttributes.gemstone_slots) {
-        price += ExtraAttributes.gemstone_slots * db['gemstone_chamber'];
+        price += ExtraAttributes.gemstone_slots * db['gemstone_chamber'] ?? 0;
       }
 
       if (ExtraAttributes.drill_part_upgrade_module) {

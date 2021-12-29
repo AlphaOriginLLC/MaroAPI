@@ -22,20 +22,12 @@ const createJsonResponse = function (res, code, reason) {
   });
 };
 
-router.get('/test', async (req, res) => {
-  return res.status(200).json({
-    status: 200,
-    data: "OK"
-  });
-});
 
 router.post('/categories', async (req, res) => {
-  console.log("getting request");
   const profile = req.body.data;
 
   try {
     const items = await itemGenerator.getItems(profile, prices);
-
     if (items.no_inventory) {
       return createJsonResponse(res, 404, 'This player has their inventory API disabled.');
     }
