@@ -23,15 +23,13 @@ const retrievePrices = async function () {
     prices[lower] = parseInt(value);
   }
 
-  unfoundAuctions.forEach( async (k,v) => {
-    await db.auctions.findOneAndUpdate({id : k.toUpperCase() , auction : { value : {"$exists" : false}}}, {$set : {auction: {value : v}}})
+  Objects.entries(unfoundAuctions).forEach( async (k,v) => {
+    await db.auctions.findOneAndUpdate({id : k.toUpperCase() , "auction.value" : {"$exists" : false}}, {$set : {"auction.value" : v}})
         .then(e => console.log(`Fulfilled ${e}`))
         .catch(e => console.error(e));
   })
 
-  await db.auctions.deleteMany({ auction : { value : {"$exists" : false}}})
-      .then(e => console.log(`Deleted ${e}`))
-      .cause(e => console.error(`Errored at ${e}`));
+  await db.auctions.deleteMany({ "auction.value" : {"$exists" : false}});
 
   for (const product of await db.bazaar.find()) {
     prices[product.id.toLowerCase()] = parseInt(product.buyPrice);
