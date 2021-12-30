@@ -23,7 +23,7 @@ const retrievePrices = async function () {
     prices[lower] = parseInt(value);
   }
 
-  unfoundAuctions.forEach( async (k,v) => {
+  Object.entries(unfoundAuctions).forEach( async (k,v) => {
     await db.auctions.findOneAndUpdate({id : k.toUpperCase() , auction : { value : {"$exists" : false}}}, {$set : {auction: {value : v}}})
         .then(e => console.log(`Fulfilled ${e}`))
         .catch(e => console.error(e));
