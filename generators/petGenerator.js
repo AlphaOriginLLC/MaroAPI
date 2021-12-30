@@ -36,7 +36,7 @@ const calculateSkillLevel = function (pet) {
 
 const getPetPrice = function (pet, db) {
   const { lvl1, lvl100, lvl200 } = getPricesFromDb(pet, db);
-  if (lvl1 == undefined || lvl100 == undefined) {
+  if (lvl1 == undefined || (lvl100 == undefined && lvl200 == undefined)) {
     return pet;
   }
 
