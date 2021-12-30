@@ -24,7 +24,6 @@ const updateAuctions = async function () {
 
     const lowest = Math.min(...sales.map(i => i.value));
     const auction = auctions[item].filter(i => i.value === lowest)[0];
-    await db.auctions.remove({id : item.toUpperCase() , auction : { value : {"$exists" : false}}}); // Temporarily drop all items that are not up-to-date in new CPC
     await db.auctions.updateOne({ id: item.toUpperCase() }, { sales: sales, auction: auction }, { upsert: true });
   });
   auctions = {};
