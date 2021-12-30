@@ -27,7 +27,7 @@ const updateAuctions = async function () {
     await db.auctions.updateOne({ id: item.toUpperCase() }, { sales: sales, auction: auction }, { upsert: true });
   });
   auctions = {};
-  setTimeout(() => fetchAuctions(), 30 * 1000);
+  setTimeout(() => fetchAuctions(), 30 * 10000);
 };
 
 const processAuctions = async function (data) {
