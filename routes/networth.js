@@ -6,9 +6,32 @@ const db = require('../storage/database');
 let prices = {};
 
 const retrievePrices = async function () {
+  let unfoundAuctions = {};
+
   for (const item of await db.auctions.find()) {
-    prices[item.id.toLowerCase()] = parseInt(item.auction.value);
+    // Temporarily (?) find CPC of outdated auctions
+    let value = item.auction.value ?? 0;
+    let lower = item.id.toLowerCase();
+    if(value == 0 && !(lower in prices)){
+      let count = item.auction.count;
+      value = (count <= 1) ? item.auction.price : item.auction.price / count;
+      unfoundAuctions[lower] = value;
+    }
+    if(unfoundAuctions.hasOwnProperty(lower)) {
+      delete unfoundAuctions[lower];
+    }
+    prices[lower] = parseInt(value);
   }
+
+  unfoundAuctions.forEach( async (k,v) => {
+    await db.auctions.findOneAndUpdate({id : k.toUpperCase() , auction : { value : {"$exists" : false}}}, {$set : {auction: {value : v}}})
+        .then(e => console.log(`Fulfilled ${e}`))
+        .catch(e => console.error(e));
+  })
+
+  await db.auctions.deleteMany({ auction : { value : {"$exists" : false}}})
+      .then(e => console.log(`Deleted ${e}`))
+      .cause(e => console.error(`Errored at ${e}`));
 
   for (const product of await db.bazaar.find()) {
     prices[product.id.toLowerCase()] = parseInt(product.buyPrice);
