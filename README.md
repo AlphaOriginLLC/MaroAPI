@@ -32,7 +32,7 @@ Then you can start the API service using the following command using either Yarn
 First navigate into the `/backup` folder and import the .csv files into a Mongo Database.
 
     mongoimport --type csv -d maro -c auctions --headerline --drop auctions.csv <MongoConnectionString>
-    mongoimport --type csv -d maro -c bazzar --headerline --drop bazzar.csv <MongoConnectionString>
+    mongoimport --type csv -d maro -c bazaar --headerline --drop bazaar.csv <MongoConnectionString>
     mongoimport --type csv -d maro -c leaderboards --headerline --drop leaderboards.csv <MongoConnectionString>
     mongoimport --type csv -d maro -c players --headerline --drop players.csv <MongoConnectionString>
 
@@ -48,9 +48,17 @@ Endpoints that require a valid parameter will be listed on the API documentation
 
 For sending a request to the POST endpoints, details on the required body structure and the response format is found [here](https://gist.github.com/zt3h)
 
+### API Hosts
+
+The below list of domains are users / organisations that have chosen to host this API under their own management. Note that these services could be stopped at anytime, so please make sure to keep up in touch with the owners.
+
+    https://maro.skybrokers.xyz - By SkyBrokers (discord.gg/ssb)
+    https://skyblock.acebot.xyz - By HyperGame (discord.gg/hXPapQ3)
+    
+
 ### Support / Contact
 
-If you have any questions or queries about the code please join Maro's [discord](https://discord.gg/CAMZpQyCxU) and open a ticket and I'll try to answer it ASAP.
+If you have any questions or queries about the code please join Maro's [discord](https://discord.gg/CAMZpQyCxU)
 
 ## License
 

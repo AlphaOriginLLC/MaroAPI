@@ -12,17 +12,17 @@ const Bazaar = require('./routes/bazaar');
 const Networth = require('./routes/networth');
 const Leaderboard = require('./routes/leaderboard');
 const ForgeProfits = require('./routes/forgeProfits');
-const HealthCheck = require('./routes/healthCheck');
+const ApiStats = require('./routes/apiStats');
 
 require('./jobs/updateAuctions');
 require('./jobs/updateBazaar');
 
 const createCluster = function () {
-  const totalCores = process.env.CLUSTERS || os.cpus().length;
+  const clusters = process.env.CLUSTERS || os.cpus().length;
 
-  console.log(`Booting Maro's API with ${totalCores} instances`);
+  console.log(`Booting Maro's API with ${clusters} instances`);
 
-  for (let i = 0; i < totalCores; i++) {
+  for (let i = 0; i < clusters; i++) {
     cluster.fork();
   }
 
@@ -47,7 +47,7 @@ const startWebService = async function () {
   app.use('/api/networth', Networth);
   app.use('/api/leaderboard', Leaderboard);
   app.use('/api/forge', ForgeProfits);
-  app.use('/api/health', HealthCheck);
+  app.use('/api/stats', ApiStats);
 
   app.use(NotFound);
 
