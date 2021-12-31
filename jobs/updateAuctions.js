@@ -71,7 +71,7 @@ const getAttributes = function (item, itemName) {
     const pet = JSON.parse(item.petInfo.value);
     const data = petGenerator.calculateSkillLevel(pet);
 
-    if (data.level == 1 || data.level == 100 || data.level == 200) {
+    if (data.level == 1 || data.level == 100 || data.level == 102 || data.level == 200) {
       itemId = `lvl_${data.level}_${pet.tier}_${pet.type}`;
       itemName = `[Lvl ${data.level}] ${helper.capitalize(`${pet.tier} ${pet.type}`)}`;
     }
